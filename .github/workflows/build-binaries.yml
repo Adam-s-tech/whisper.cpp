@@ -544,7 +544,8 @@ jobs:
             deps=$(ldd "$bin")
             printf '%s\n' "$deps" | grep -Eq 'libcudart.so.12 => .*/dist/libcudart.so.12' || { echo "$bin: libcudart is not bundled"; exit 1; }
             printf '%s\n' "$deps" | grep -Eq 'libcublas.so.12 => .*/dist/libcublas.so.12' || { echo "$bin: cuBLAS is not bundled"; exit 1; }
-            test -z "$(printf '%s\n' "$deps" | awk '/not found/ && $1 != "libcuda.so.1" { print $1 })"
+            printf '%s\n' "$deps" | grep -Eq 'libcublasLt.so.12 => .*/dist/libcublasLt.so.12' || { echo "$bin: cuBLASLt is not bundled"; exit 1; }
+            test -z "$(printf '%s\n' "$deps" | awk '/not found/ && $1 != "libcuda.so.1" { print $1 }')"
           done
           test ! -e dist/libcuda.so.1
 
